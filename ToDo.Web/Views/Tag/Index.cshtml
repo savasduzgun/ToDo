@@ -1,28 +1,48 @@
 ﻿@model List<Tag>
 
-    <div class="card">
-        <div class="card-header bg-warning text-center fs-4">Etiket Listesi</div>
-        <div class="card-body">
-            <table class="table table-bordered table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Ad</th>
-                        <th>İşlemler</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
+<div class="card">
+    <div class="card-header bg-warning text-center fs-4">Etiket Listesi</div>
+    <div class="card-body">
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ad</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td>@item.Id</td>
                         <td>@item.Name</td>
-                        <td><a asp-action="Delete" asp-controller="Tag" asp-route-id="@item.Id" onclick="return confirm('Silmek istediğinize emin misiniz ?')" class="btn btn-danger">Sil</a></td>
+                        @*  <td><a asp-action="Delete" asp-controller="Tag" asp-route-id="@item.Id" onclick="return confirm('Silmek istediğinize emin misiniz ?')" class="btn btn-danger">Sil</a></td> *@
+                        <td><a onclick="deleteTag(@item.Id)" class="btn btn-danger">Sil</a></td>
                     </tr>
                 }
-                </tbody>
-            </table>
-        </div>
-        <div class="card-footer">Toplam Kayıt : @Model.Count</div>
-        
+            </tbody>
+        </table>
     </div>
+    <div class="card-footer">Toplam Kayıt : @Model.Count</div>
+</div>
+
+@section Scripts {
+    <script>
+        function deleteTag(id) {
+            if (confirm("Silmek istediğinizden emin misiniz?")) {
+                $.ajax({
+                    url: 'Tag/DeleteAjax',
+                    type: 'POST',
+                    data: { id: id, name: "" },
+                    success: function () {
+                        alert("Silme işlemi başarılı");
+                    }
+                });
+            }
+            else {
+                alert("İşlemden vazgeçtiniz");
+            }
+        }
+    </script>
+}

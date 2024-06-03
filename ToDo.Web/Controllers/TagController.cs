@@ -27,5 +27,13 @@ namespace ToDo.Web.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public IActionResult DeleteAjax(Tag tag) 
+        {
+            _context.Tags.Remove(tag);
+            _context.SaveChanges();
+            return Ok("İşlem başarılı");
+        }
     }
 }
