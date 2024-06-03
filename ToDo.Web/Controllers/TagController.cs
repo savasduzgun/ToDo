@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDo.Data;
+using ToDo.Models;
 
 namespace ToDo.Web.Controllers
 {
@@ -15,6 +16,16 @@ namespace ToDo.Web.Controllers
         public IActionResult Index()
         {
             return View(_context.Tags.ToList());
+        }
+        public IActionResult Delete(int id)
+        {
+            Tag tag = _context.Tags.Find(id);
+            if (tag != null)
+            {
+                _context.Tags.Remove(tag);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
         }
     }
 }
