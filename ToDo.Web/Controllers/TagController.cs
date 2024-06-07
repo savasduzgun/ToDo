@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDo.Data;
 using ToDo.Models;
+using ToDo.Models.ViewModels;
 
 namespace ToDo.Web.Controllers
 {
@@ -15,7 +16,11 @@ namespace ToDo.Web.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.Tags.ToList());
+            //TagListVM vm = new TagListVM();
+            //vm.Tags = _context.Tags.ToList();
+            //return View(vm);
+
+            return View(new TagListVM { Tags = _context.Tags.ToList() });
         }
         public IActionResult Delete(int id)
         {
@@ -29,11 +34,25 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteAjax(Tag tag) 
+        public IActionResult DeleteAjax(Tag tag)
         {
             _context.Tags.Remove(tag);
             _context.SaveChanges();
             return Ok("İşlem başarılı");
         }
+
+        [HttpPost]
+        public IActionResult Add(Tag tag) 
+        {
+            _context.Tags.Add(tag);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Update(int id)
+        { 
+            return View(_context.Tags.Find(id));
+        }
+
     }
 }

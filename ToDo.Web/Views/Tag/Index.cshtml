@@ -1,8 +1,11 @@
-﻿@model List<Tag>
+﻿@model TagListVM
+
 
 <div class="card">
     <div class="card-header bg-warning text-center fs-4">Etiket Listesi</div>
     <div class="card-body">
+        <a href="#" class="btn btn-success" data-bs-toggle="modal"
+           data-bs-target="#modalEkle">Ekle</a>
         <table class="table table-bordered table-hover table-striped">
             <thead>
                 <tr>
@@ -12,24 +15,69 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Tags)
                 {
                     <tr>
                         <td>@item.Id</td>
                         <td>@item.Name</td>
-                        @*  <td><a asp-action="Delete" asp-controller="Tag" asp-route-id="@item.Id" onclick="return confirm('Silmek istediğinize emin misiniz ?')" class="btn btn-danger">Sil</a></td> *@
-                        <td><a onclick="deleteTag(@item.Id)" class="btn btn-danger">Sil</a></td>
+                        <td>
+                            <a asp-action="Delete" asp-controller="Tag" asp-route-id="@item.Id" class="btn btn-danger">Sil</a>
+                            <a asp-action="Update" asp-controller="Tag" asp-route-id="@item.Id" class="btn btn-warning">Düzenle</a>
+                        </td>
+                        @*   <td>
+                    <a onclick="deleteTag(@item.Id,this)" class="btn btn-danger">Sil</a>
+                    <a onclick="deleteTag(@item.Id,this)" class="btn btn-danger">Sil</a>
+                    </td> *@
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    <div class="card-footer">Toplam Kayıt : @Model.Count</div>
+    <div class="card-footer">Toplam Kayıt : @Model.Tags.Count</div>
+</div>
+
+<div class="modal fade"
+     id="modalEkle"
+     tabindex="-1"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false"
+     role="dialog"
+     aria-labelledby="modalTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
+         role="document">
+        <form method="post" asp-action="Add">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Yeni Etiket Ekle
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+
+                    <input asp-for="Tag.Name" class="form-control" placeholder="Lütfen etiket adı giriniz" />
+
+
+
+
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Kapat </button>
+                    <button type="button" class="btn btn-primary"> Kaydet </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 @section Scripts {
     <script>
-        function deleteTag(id) {
+        function deleteTag(id, element) {
             if (confirm("Silmek istediğinizden emin misiniz?")) {
                 $.ajax({
                     url: 'Tag/DeleteAjax',
@@ -37,6 +85,9 @@
                     data: { id: id, name: "" },
                     success: function () {
                         alert("Silme işlemi başarılı");
+                        // $("#satir-" + id).remove();
+                        $(element).parent().parent().remove();
+
                     }
                 });
             }
