@@ -53,6 +53,12 @@ namespace ToDo.Web.Controllers
         { 
             return View(_context.Tags.Find(id));
         }
-
+        [HttpPost]
+        public IActionResult Update(Tag tag)
+        {
+            _context.Tags.Update(tag);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
