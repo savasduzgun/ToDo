@@ -24,6 +24,20 @@
         fillTable();
 
 
+        function deleteStatus(id,element) {
+            if (confirm("Silmek istediğinizden emin misiniz ?")) {
+
+                $.ajax({
+                    url: '/Status/Delete',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function () {
+                        $(element).parent().parent().remove();
+                    }
+                });
+            }  
+        }
+
         function fillTable() {
             $.ajax({
                 url: '/Status/GetAll',
@@ -34,7 +48,7 @@
                             <tr>
                                 <td>${item.id}</td>
                                 <td>${item.name}</td>
-                                <td>-</td>
+                                <td><a onclick="deleteStatus(${item.id},this)" href="#" class="btn btn-danger">Sil</a></td>
                             </tr>
                        `);
                     }
