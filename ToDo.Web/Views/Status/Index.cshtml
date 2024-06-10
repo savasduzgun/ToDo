@@ -1,6 +1,8 @@
 ﻿<div class="card">
     <div class="card-header bg-primary text-white text-center">Durumlar</div>
     <div class="card-body">
+        <a href="#" class="btn btn-success mb-3" data-bs-toggle="modal"
+           data-bs-target="#modalEkle">Ekle</a>
 
         <table class="table table-bordered table-hover table-striped">
             <thead>
@@ -19,10 +21,56 @@
     <div class="card-footer"></div>
 </div>
 
+
+<div class="modal fade"
+     id="modalEkle"
+     tabindex="-1"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false"
+     role="dialog"
+     aria-labelledby="modalTitleId"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
+         role="document">
+        
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">
+                        Yeni Durum Ekle
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <input type="text" id="txtStatusName" class="form-control" placeholder="Lütfen durum adı giriniz" />
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Kapat </button>
+                    <a href="#" id="btnSave" class="btn btn-primary"> Kaydet </a>
+                </div>
+            </div>
+       
+    </div>
+</div>
+
 @section Scripts{
     <script>
         fillTable();
 
+        $("#btnSave").click(function () {
+            let statusName = $("#txtStatusName").val();
+            $.ajax({
+                url: '/Status/Add',
+                type: 'POST',
+                data: {name:statusName},
+                success: function () {
+                    fillTable();
+                    $("#modalEkle").modal('hide');
+                    $("#txtStatusName").val("");
+                }
+            });
+        });
 
         function deleteStatus(id,element) {
             if (confirm("Silmek istediğinizden emin misiniz ?")) {
@@ -43,6 +91,7 @@
                 url: '/Status/GetAll',
                 type: 'GET',
                 success: function (res) {
+                    $("tbody").empty();
                     for (let item of res) {
                         $("tbody").append(`
                             <tr>
