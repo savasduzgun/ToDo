@@ -26,7 +26,7 @@ namespace ToDo.Web.Controllers
         {
             _context.Statuses.Add(status);
             _context.SaveChanges();
-            return Ok(status); //sayfanın yenilenmesini istemediğimiz için view göndermeyiz
+            return Ok(status.Id); //sayfanın yenilenmesini istemediğimiz için view göndermeyiz
         }
         [HttpPost]
         public IActionResult Update(Status status)

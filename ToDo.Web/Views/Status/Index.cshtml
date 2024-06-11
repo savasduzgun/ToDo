@@ -1,8 +1,7 @@
 ﻿<div class="card">
     <div class="card-header bg-primary text-white text-center">Durumlar</div>
     <div class="card-body">
-        <a href="#" class="btn btn-success mb-3" data-bs-toggle="modal"
-           data-bs-target="#modalEkle">Ekle</a>
+        <a href="#" id="btnEkle" class="btn btn-success mb-3">Ekle</a>
 
         <table class="table table-bordered table-hover table-striped">
             <thead>
@@ -58,19 +57,38 @@
     <script>
         fillTable();
 
-        $("#btnSave").click(function () {
+        $("#btnEkle").click(function () {
+            $("#modalEkle").modal("show");
+            $("#btnSave").text("Kaydet").removeClass("btn-success").addClass("btn-primary").off().click(kaydet);
+            $("#txtStatusName").val("");
+
+        });
+
+        $("#btnSave").click(kaydet);
+
+        function kaydet () {
             let statusName = $("#txtStatusName").val();
             $.ajax({
                 url: '/Status/Add',
                 type: 'POST',
-                data: {name:statusName},
-                success: function () {
-                    fillTable();
+                data: { name: statusName },
+                success: function (res) {
+                    //fillTable();
                     $("#modalEkle").modal('hide');
                     $("#txtStatusName").val("");
+                    $("tbody").append(`
+                                            <tr>
+                                                <td>${res}</td>
+                                                <td>${statusName}</td>
+                                                <td>
+                                                <a onclick="deleteStatus(${res},this)" href="#" class="btn btn-danger">Sil</a>
+                                                <a onclick="updateStatus(${res},this,'${statusName}')" href="#" class="btn btn-warning">Düzenle</a>
+                                                </td>
+                                            </tr>
+                                       `);
                 }
             });
-        });
+        }
 
         function deleteStatus(id,element) {
             if (confirm("Silmek istediğinizden emin misiniz ?")) {
@@ -86,6 +104,23 @@
             }  
         }
 
+        function updateStatus(id,element,statusName) {
+            $("#modalEkle").modal('show');
+            $("#txtStatusName").val(statusName);
+            $("#btnSave").text("Güncelle").removeClass("btn-primary").addClass("btn-success").off().click(function () {
+                $.ajax({
+                    url: '/Status/Update',
+                    type: 'POST',
+                    data: { id: id, name: $("#txtStatusName").val() },
+                    success: function () {
+                        $("#modalEkle").modal("hide");
+                        $(element).parent().parent().children()[1].innerText = $("#txtStatusName").val();
+                    }
+                });
+
+            });
+        }
+
         function fillTable() {
             $.ajax({
                 url: '/Status/GetAll',
@@ -97,7 +132,10 @@
                             <tr>
                                 <td>${item.id}</td>
                                 <td>${item.name}</td>
-                                <td><a onclick="deleteStatus(${item.id},this)" href="#" class="btn btn-danger">Sil</a></td>
+                                <td>
+                                        <a onclick="deleteStatus(${item.id},this)" href="#" class="btn btn-danger">Sil</a>
+                                                <a onclick="updateStatus(${item.id},this,'${item.name}')" href="#" class="btn btn-warning">Düzenle</a>
+                                </td>
                             </tr>
                        `);
                     }
