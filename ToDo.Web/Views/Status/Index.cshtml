@@ -131,7 +131,7 @@
                         $("tbody").append(`
                             <tr>
                                 <td>${item.id}</td>
-                                <td>${item.name}</td>
+                                        <td ondblclick="updateStatusInline(${item.id},this)">${item.name}</td>
                                 <td>
                                         <a onclick="deleteStatus(${item.id},this)" href="#" class="btn btn-danger">Sil</a>
                                                 <a onclick="updateStatus(${item.id},this,'${item.name}')" href="#" class="btn btn-warning">Düzenle</a>
@@ -142,5 +142,27 @@
                 }
             });
         }
+
+        function updateStatusInline(id,element) {
+            $(element).attr("contentEditable", "true");
+            $(element).parent().addClass("bg-info");
+            $(element).addClass("bg-dark").addClass("text-white");
+            $(element).focus();
+            $(element).one().focusout(function () {
+                $(element).removeAttr("contentEditable");
+                $(element).parent().removeClass("bg-info");
+                $(element).removeClass("bg-dark").removeClass("text-white");
+
+                $.ajax({
+                    url: '/Status/Update',
+                    type: 'POST',
+                    data: { id: id, name: $(element).text()},
+                    success: function (res) { 
+                        
+                    }
+                });
+            });
+        }
+
     </script>
 }
