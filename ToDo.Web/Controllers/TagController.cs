@@ -60,5 +60,9 @@ namespace ToDo.Web.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        public IActionResult GetAll() 
+        {
+            return Json(_context.Tags.ToList());
+        }
     }
 }
