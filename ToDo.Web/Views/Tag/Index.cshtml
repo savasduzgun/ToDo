@@ -1,15 +1,11 @@
-﻿@model TagListVM
-
-
-<div class="card">
+﻿<div class="card">
     <div class="card-header bg-warning text-center fs-4">Etiket Listesi</div>
     <div class="card-body">
-        <a href="#" class="btn btn-success" data-bs-toggle="modal"
-           data-bs-target="#modalEkle">Ekle</a>
+        <a href="#" id="btnEkle" class="btn btn-success">Ekle</a>
         <table class="table table-bordered table-hover table-striped">
         </table>
     </div>
-    <div class="card-footer">Toplam Kayıt : @Model.Tags.Count</div>
+    <div class="card-footer">@* Toplam Kayıt : @Model.Tags.Count *@</div>
 </div>
 
 <div class="modal fade"
@@ -22,7 +18,7 @@
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
          role="document">
-        <form method="post" asp-action="Add">
+       
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitleId">
@@ -33,26 +29,47 @@
                 <div class="modal-body">
 
 
-                    <input asp-for="Tag.Name" class="form-control" placeholder="Lütfen etiket adı giriniz" />
-
-
-
-
-
+                    <input id="txtTagName" class="form-control" placeholder="Lütfen etiket adı giriniz" />
 
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Kapat </button>
-                    <button type="submit" class="btn btn-primary"> Kaydet </button>
+                    <a id="btnSave" class="btn btn-primary"> Kaydet </a>
                 </div>
             </div>
-        </form>
+        
     </div>
 </div>
 
 @section Scripts {
     <script>
+        $("#modalEkle").on('shown.bs.modal', function () {
+            $(this).find('#txtTagName').focus().val('');
+        });
+
+        $("#btnEkle").click(function () {
+            $("#modalEkle").modal("show");
+            $("#btnSave").click(function () {
+
+                $.ajax({
+                    url: '/Tag/Add',
+                    type: 'POST',
+                    data: {
+                        name: $("#txtTagName").val()
+                    },
+                    success: function (res) {
+                        $("#modalEkle").modal("hide");
+
+                        //DataTable.ajax.reload(); en son olan kayıt sayısı kadar ekliyor
+
+                        DataTable.row.add({ id: res, name: $("#txtTagName").val() }).draw();
+                    }
+                });
+            });
+        });
+
+
         var DataTable = $("table").DataTable({
             ajax: '/Tag/GetAll',
             columns: [
