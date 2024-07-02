@@ -7,7 +7,6 @@
         <a href="#" class="btn btn-success" data-bs-toggle="modal"
            data-bs-target="#modalEkle">Ekle</a>
         <table class="table table-bordered table-hover table-striped">
-           
         </table>
     </div>
     <div class="card-footer">Toplam Kayıt : @Model.Tags.Count</div>
@@ -54,9 +53,42 @@
 
 @section Scripts {
     <script>
-        $("table").DataTable();
+        var DataTable = $("table").DataTable({
+            ajax: '/Tag/GetAll',
+            columns: [
+                { data: 'id', title: 'ID' },
+                { data: 'name', title: 'Etiket Adı' },
+                {
+                    data: 'id', title: 'İşlemler', render: function (data, type, row) {
+
+                        return `<a onclick="deleteTag(${data},this)" class="btn btn-danger">Sil</a>`;
+
+                    }
+                }
+            ]
+        });
+
+        function deleteTag(id, element) {
+
+            if (confirm("Emin misiniz ?")) {
+                $.ajax({
+                    url: '/Tag/DeleteAjax',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function () {
+                        //DataTable.ajax.reload();
+                        let satir = $(element).parent().parent();
+                        DataTable.row(satir).remove().draw();
+                    }
+                });
+            }
+
+
+        }
+
+
     </script>
-   @*  <script>
+    @*  <script>
         function deleteTag(id, element) {
             if (confirm("Silmek istediğinizden emin misiniz?")) {
                 $.ajax({

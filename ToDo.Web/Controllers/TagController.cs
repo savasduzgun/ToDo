@@ -42,7 +42,7 @@ namespace ToDo.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Tag tag) 
+        public IActionResult Add(Tag tag)
         {
             _context.Tags.Add(tag);
             _context.SaveChanges();
@@ -50,7 +50,7 @@ namespace ToDo.Web.Controllers
         }
 
         public IActionResult Update(int id)
-        { 
+        {
             return View(_context.Tags.Find(id));
         }
         [HttpPost]
@@ -60,9 +60,9 @@ namespace ToDo.Web.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
-        public IActionResult GetAll() 
+        public IActionResult GetAll()
         {
-            return Json(_context.Tags.ToList());
+            return Json(new { data = _context.Tags.ToList() });
         }
     }
 }
