@@ -18,27 +18,27 @@
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
          role="document">
-       
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitleId">
-                        Yeni Etiket Ekle
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
 
-
-                    <input id="txtTagName" class="form-control" placeholder="Lütfen etiket adı giriniz" />
-
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Kapat </button>
-                    <a id="btnSave" class="btn btn-primary"> Kaydet </a>
-                </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">
+                    Yeni Etiket Ekle
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-        
+            <div class="modal-body">
+
+
+                <input id="txtTagName" class="form-control" placeholder="Lütfen etiket adı giriniz" />
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Kapat </button>
+                <a id="btnSave" class="btn btn-primary"> Kaydet </a>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -82,7 +82,10 @@
 
                     }
                 }
-            ]
+            ],
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json'
+            }
         });
 
         function deleteTag(id, element) {
