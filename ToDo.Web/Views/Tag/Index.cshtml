@@ -78,13 +78,16 @@
                 {
                     data: 'id', title: 'İşlemler', render: function (data, type, row) {
 
-                        return `<a onclick="deleteTag(${data},this)" class="btn btn-danger">Sil</a>`;
+                        return `<a onclick="deleteTag(${data},this)" class="btn btn-danger">Sil</a>
+                                <a onclick="updateTag(${data},this)" class="btn btn-success">Düzenle</a>
+                                `;
 
                     }
                 }
             ],
             language: {
-                url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json'
+                url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Turkish.json',
+                searchPlaceholder: "Kelime giriniz"
             }
         });
 
@@ -102,6 +105,9 @@
                     }
                 });
             }
+        }
+
+        function updateTag(id, element) {
 
 
         }
