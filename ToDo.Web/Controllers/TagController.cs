@@ -58,7 +58,7 @@ namespace ToDo.Web.Controllers
         {
             _context.Tags.Update(tag);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return Ok();
         }
         public IActionResult GetAll()
         {

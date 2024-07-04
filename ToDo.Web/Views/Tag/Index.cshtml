@@ -79,8 +79,9 @@
                     data: 'id', title: 'İşlemler', render: function (data, type, row) {
 
                         return `<a onclick="deleteTag(${data},this)" class="btn btn-danger">Sil</a>
-                                <a onclick="updateTag(${data},this)" class="btn btn-success">Düzenle</a>
-                                `;
+                                                        <a onclick="updateTag(${data},this)" class="btn btn-success">Düzenle</a>
+                                                                 <a id="btnKaydet-${data}" onclick="updateSaveTag()" class="btn btn-warning" hidden>Kaydet</a>
+                                                        `;
 
                     }
                 }
@@ -107,9 +108,31 @@
             }
         }
 
-        function updateTag(id, element) {
+        function updateTag(id, button) {
 
+            let td = $($(button).parent().parent().children()[1])
 
+            $("#btnKaydet-" + id).removeAttr("hidden").show();
+
+            $(button).hide();
+
+            let eskiDeger = td.text();
+
+            td.attr("contentEditable", "true").focus();
+
+            $("#btnKaydet-" + id).off().click(function () {
+                $.ajax({
+                    url: 'Tag/Update',
+                    type: 'POST',
+                    data: { id: id, name: td.text() },
+                    success: function () {
+                        td.removeAttr("contentEditable");
+                        alert("Güncelleme başarılı");
+                        $(button).show();
+                        $("#btnKaydet-" + id).hide();
+                    }
+                });
+            });
         }
 
 
