@@ -78,9 +78,9 @@
                 {
                     data: 'id', title: 'İşlemler', render: function (data, type, row) {
 
-                        return `<a id="btnSil-${data}" onclick="deleteTag(${data},this)" hidden class="btn btn-danger">Sil</a>
+                        return `<a id="btnSil-${data}" onclick="deleteTag(${data},this)" hidden class="btn btn-danger satir-${data}">Sil</a>
                                                                         <a onclick="updateTag(${data},this)" class="btn btn-success">Düzenle</a>
-                                                                                 <a id="btnKaydet-${data}" class="btn btn-warning" hidden>Kaydet</a> <a id="btnIptal-${data}" class="btn btn-danger" hidden>İptal</a>
+                                                                                         <a id="btnKaydet-${data}" class="btn btn-warning satir-${data}" hidden>Kaydet</a> <a id="btnIptal-${data}" class="btn btn-danger satir-${data}" hidden>İptal</a>
                                                                         `;
 
                     }
@@ -112,9 +112,10 @@
 
             let td = $($(button).parent().parent().children()[1])
 
-            $("#btnKaydet-" + id).removeAttr("hidden").show();
-            $("#btnIptal-" + id).removeAttr("hidden").show();
-            $("#btnSil-" + id).removeAttr("hidden").show();
+            // $("#btnKaydet-" + id).removeAttr("hidden").show();
+            // $("#btnIptal-" + id).removeAttr("hidden").show();
+            // $("#btnSil-" + id).removeAttr("hidden").show();
+            $(".satir-" + id).removeAttr("hidden").show(); //show olmasını istediğimiz butonalara class verip az kod
 
             $(button).hide();
 
@@ -126,9 +127,10 @@
                 td.text(eskiDeger);
                 td.removeAttr("contentEditable");
                 $(button).show();
-                $("#btnKaydet-" + id).hide();
-                $(this).hide();
-                $("#btnSil-" + id).hide();
+                // $("#btnKaydet-" + id).hide();
+                // $(this).hide();
+                // $("#btnSil-" + id).hide();
+                $(".satir-" + id).hide(); //hide olmasını istediğimiz butonalara class verip az kod
             });
 
             $("#btnKaydet-" + id).off().click(function () {
