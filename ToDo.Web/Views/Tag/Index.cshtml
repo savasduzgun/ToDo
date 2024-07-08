@@ -78,10 +78,10 @@
                 {
                     data: 'id', title: 'İşlemler', render: function (data, type, row) {
 
-                        return `<a onclick="deleteTag(${data},this)" class="btn btn-danger">Sil</a>
-                                                        <a onclick="updateTag(${data},this)" class="btn btn-success">Düzenle</a>
-                                                                 <a id="btnKaydet-${data}" onclick="updateSaveTag()" class="btn btn-warning" hidden>Kaydet</a>
-                                                        `;
+                        return `<a id="btnSil-${data}" onclick="deleteTag(${data},this)" hidden class="btn btn-danger">Sil</a>
+                                                                        <a onclick="updateTag(${data},this)" class="btn btn-success">Düzenle</a>
+                                                                                 <a id="btnKaydet-${data}" class="btn btn-warning" hidden>Kaydet</a> <a id="btnIptal-${data}" class="btn btn-danger" hidden>İptal</a>
+                                                                        `;
 
                     }
                 }
@@ -113,12 +113,23 @@
             let td = $($(button).parent().parent().children()[1])
 
             $("#btnKaydet-" + id).removeAttr("hidden").show();
+            $("#btnIptal-" + id).removeAttr("hidden").show();
+            $("#btnSil-" + id).removeAttr("hidden").show();
 
             $(button).hide();
 
             let eskiDeger = td.text();
 
             td.attr("contentEditable", "true").focus();
+
+            $("#btnIptal-" + id).off().click(function () {
+                td.text(eskiDeger);
+                td.removeAttr("contentEditable");
+                $(button).show();
+                $("#btnKaydet-" + id).hide();
+                $(this).hide();
+                $("#btnSil-" + id).hide();
+            });
 
             $("#btnKaydet-" + id).off().click(function () {
                 $.ajax({
@@ -130,6 +141,9 @@
                         alert("Güncelleme başarılı");
                         $(button).show();
                         $("#btnKaydet-" + id).hide();
+                        $("#btnIptal-" + id).hide();
+                        $("#btnSil-" + id).hide();
+
                     }
                 });
             });
