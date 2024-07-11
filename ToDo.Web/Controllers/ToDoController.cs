@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ToDo.Data;
+using ToDo.Models;
 
 namespace ToDo.Web.Controllers
 {
@@ -15,6 +17,21 @@ namespace ToDo.Web.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult GetAll() 
+        {
+            //var result = _context.Todos.Include(t=>t.Status).Include(t=>t.Tags).ToList();
+
+            var result2 = _context.Todos.Select(t=> new Todo
+            { 
+                Id = t.Id,
+                Name = t.Name,
+                Status = t.Status, 
+                Tags = t.Tags 
+            });
+            return Json(new {data = result2});
+
         }
     }
 }
