@@ -28,6 +28,7 @@ namespace ToDo.Web.Controllers
                 Id = t.Id,
                 Name = t.Name,
                 Status = t.Status, 
+                Description = t.Description,
                 Tags = t.Tags 
             });
             return Json(new {data = result2});

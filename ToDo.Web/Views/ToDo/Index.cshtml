@@ -1,1 +1,33 @@
-﻿
+﻿<div class="card">
+    <div class="card-header bg-primary text-white text-center">Todo Listesi</div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped table-hover">
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var DataTable = $("table").DataTable({
+            ajax: '/Todo/GetAll',
+            columns: [
+                { data: 'id', title: 'ID' },
+                { data: 'name', title: 'Başlık' },
+                { data: 'description', title: 'Açıklama' },
+                { data: 'status.name', title: 'Durum' },
+                {
+                    data: 'tags', title: 'Etiketler', render: function (data) {
+
+                        let etiketler = "";
+                        for (let item of data) {
+                            etiketler += `<span class="bg-warning text-dark rounded-pill">${item.name}</span><br>`;
+                        }
+                        return etiketler;
+                    }
+
+                },
+                { data: 'id', title: 'İşlemler' }
+            ]
+        });
+    </script>
+}
