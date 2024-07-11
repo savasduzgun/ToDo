@@ -50,7 +50,7 @@
 
         $("#btnEkle").click(function () {
             $("#modalEkle").modal("show");
-            $("#btnSave").click(function () {
+            $("#btnSave").off().click(function () {
 
                 $.ajax({
                     url: '/Tag/Add',
